@@ -4,7 +4,8 @@ const userModel = require('../models/userModel'),
     jwtService = require('../util/jwt'),
     um = new userModel(),
     jwt = new jwtService(),
-    bcrypt = require('bcryptjs')
+    bcrypt = require('bcryptjs'),
+    urlImageBase = 'http://localhost:5000/uploads'
 
 class UserController {
     userLogin(req, res) {
@@ -97,9 +98,15 @@ class UserController {
                             })
                     } else if (data[0][0]['response'] == 0) {
                         return res
+                            .status(400)
+                            .send({
+                                message: 'User created failed'
+                            })
+                    } else if(data[0][0]['response'] == -1){
+                        return res
                             .status(202)
                             .send({
-                                message: 'User created, waiting for a confirmation'
+                                message: 'User already exist'
                             })
                     }
                 }
@@ -109,7 +116,41 @@ class UserController {
     }
 
     userProfile(req,res){
-        
+        let userID = req.params.id
+
+        um.userProfile(userID, (err,data)=>{
+            if (err) {
+                return res
+                    .status(500)
+                    .send({
+                        message: error.stack
+                    })
+            }
+            
+            if(data[0][0]['ocupacion'] == null) data[0][0]['ocupacion'] = ''
+            if(data[0][0]['grado_educativo'] == null) data[0][0]['grado_educativo'] = ''
+            if(data[0][0]['distrito'] == null) data[0][0]['distrito'] = ''
+            if(data[0][0]['sexo'] == null) data[0][0]['sexo'] = ''
+            
+            return res
+                .status(200)
+                .send({
+                    user: data[0][0]
+                })
+        })
+    }
+
+    userClaim(req,res){
+        let claim = {
+            claimUserId: req,body,claimUserId,
+            claimDate : req.body.claimDate,
+            claimMessage: req.body.claimMessage,
+            claimCellPhone: req.body.claimCellPhone
+        }
+
+        um.userClaim( claim , (err,response)=>{
+            
+        })
     }
 }
 

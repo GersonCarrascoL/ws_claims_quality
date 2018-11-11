@@ -4,11 +4,13 @@ const conn = require('../util/mysqlConnection')
 
 class UserModel {
     userLogin(email, cb) {
-        conn.query('CALL sp_app_login(?)', [email], cb)
+        conn.query('CALL sp_app_signin(?)', [
+            email
+        ], cb)
     }
 
     userRegister(user, cb) {
-        conn.query('CALL sp_app_register(?,?,?,?,?,?,?,?,?,?)', [
+        conn.query('CALL sp_app_signup(?,?,?,?,?,?,?,?,?,?)', [
             user.userName,
             user.userLastName,
             user.userEmail,
@@ -23,7 +25,19 @@ class UserModel {
     }
 
     userProfile(id,cb) {
-        conn.query()
+        conn.query('CALL sp_app_profile(?)',[
+            id
+        ],cb)
+    }
+
+    userClaim(claim,cb){
+        conn.query('CALL sp_app_postClaim(?,?,?,?,?)',[
+            claim.claimUserId,
+            claim.claimDate,
+            claim.claimMessage,
+            claim.claimCellPhone,
+            claim.claimUrlImage
+        ],cb)
     }
 }
 
