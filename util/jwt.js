@@ -4,13 +4,17 @@ const jwt = require('jsonwebtoken'),
 config = require('../config')
 
 class JWToken {
-    createToken(user) {
+    createToken(id) {
         const payload = {
-            id: user.id,
-            email: user.email
+            id: id
         }
 
         return jwt.sign(payload, config.SECRET_TOKEN)
+    }
+
+    decodeToken(token){
+        let decoded = jwt.decode(token);
+        return decoded;
     }
 }
 

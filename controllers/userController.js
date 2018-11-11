@@ -30,7 +30,7 @@ class UserController {
                     })
             } else {
                 bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
-                    console.log(response)
+
                     if (error) {
                         return res
                             .status(500)
@@ -41,7 +41,7 @@ class UserController {
                     if (response == true) {
                         return res.status(200).send({
                             message: 'Login succesfully',
-                            token: jwt.createToken(user)
+                            token: jwt.createToken(data[0][0].idUsuario)
                         })
                     } else {
                         return res
@@ -116,9 +116,10 @@ class UserController {
     }
 
     userProfile(req,res){
-        let userID = req.params.id
+        const token = req.headers.authorization.split(" ")[1]
+        let payload = jwt.decodeToken(token)
 
-        um.userProfile(userID, (err,data)=>{
+        um.userProfile(payload.id, (err,data)=>{
             if (err) {
                 return res
                     .status(500)
@@ -126,7 +127,7 @@ class UserController {
                         message: error.stack
                     })
             }
-            
+
             if(data[0][0]['ocupacion'] == null) data[0][0]['ocupacion'] = ''
             if(data[0][0]['grado_educativo'] == null) data[0][0]['grado_educativo'] = ''
             if(data[0][0]['distrito'] == null) data[0][0]['distrito'] = ''

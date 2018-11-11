@@ -22,4 +22,12 @@ app
     .use(restFul)
     .use(userRouter)
 
+    .use('*', function(req, res){
+        res
+        .status(404)
+        .send({
+            error: 'Url not exist'
+        });
+    });
+
 server.listen(port)
