@@ -135,9 +135,9 @@ class UserController {
             
             return res
                 .status(200)
-                .send({
-                    user: data[0][0]
-                })
+                .send(
+                    data[0][0]
+                )
         })
     }
 
