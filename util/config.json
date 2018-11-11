@@ -1,0 +1,10 @@
+{
+    "mysql" :{
+      "host" : "104.248.63.229",
+      "user" : "admin",
+      "password" : "0ef2cdec193436181d99624661f2c7b294dc276de9fc89b3",
+      "port" : 3306,
+      "database" : "procalidad"
+    }
+  }
+  

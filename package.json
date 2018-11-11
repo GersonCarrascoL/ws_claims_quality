@@ -1,0 +1,30 @@
+{
+  "name": "ws_claims",
+  "version": "1.0.0",
+  "description": "Web Services for Quality Project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GersonCarrascoL/ws_claims_quality.git"
+  },
+  "author": "GersonCarrascoL",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GersonCarrascoL/ws_claims_quality/issues"
+  },
+  "homepage": "https://github.com/GersonCarrascoL/ws_claims_quality#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-method-override": "0.0.3",
+    "jsonwebtoken": "^8.3.0",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.6"
+  }
+}
