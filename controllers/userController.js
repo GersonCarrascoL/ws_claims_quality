@@ -32,7 +32,7 @@ class UserController {
             } else {
                 if(data[0][0].es_eliminado == "1"){
                     return res
-                        .status(404)
+                        .status(403)
                         .send({
                             message: 'User deleted'
                         })
