@@ -37,29 +37,38 @@ class UserController {
                             message: 'User deleted'
                         })
                 }else{
-                    bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
-    
-                        if (error) {
-                            return res
-                                .status(500)
-                                .send({
-                                    message: err.stack
+                    if(data[0][0].es_identificado == "1"){
+
+                        bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
+        
+                            if (error) {
+                                return res
+                                    .status(500)
+                                    .send({
+                                        message: err.stack
+                                    })
+                            }
+                            if (response == true) {
+                                return res.status(200).send({
+                                    message: 'Login succesfully',
+                                    token: jwt.createToken(data[0][0].idUsuario)
                                 })
-                        }
-                        if (response == true) {
-                            return res.status(200).send({
-                                message: 'Login succesfully',
-                                token: jwt.createToken(data[0][0].idUsuario)
+                            } else {
+                                return res
+                                    .status(202)
+                                    .send({
+                                        message: 'User y/o password incorrect'
+                                    })
+        
+                            }
+                        })
+                    }else{
+                        return res
+                            .status(401)
+                            .send({
+                                message: 'User not verified'
                             })
-                        } else {
-                            return res
-                                .status(202)
-                                .send({
-                                    message: 'User y/o password incorrect'
-                                })
-    
-                        }
-                    })
+                    }
                 }
             }
         })
