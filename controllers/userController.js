@@ -22,36 +22,44 @@ class UserController {
                         message: err.stack
                     })
             }
-            if (data[0][0] == undefined) {
+            if(data[0][0].es_eliminado == 1){
                 return res
-                    .status(202)
+                    .status(404)
                     .send({
-                        message: 'User y/o password incorrect'
+                        message: 'User delete'
                     })
-            } else {
-                bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
-
-                    if (error) {
-                        return res
-                            .status(500)
-                            .send({
-                                message: err.stack
-                            })
-                    }
-                    if (response == true) {
-                        return res.status(200).send({
-                            message: 'Login succesfully',
-                            token: jwt.createToken(data[0][0].idUsuario)
+            }else{
+                if (data[0][0] == undefined) {
+                    return res
+                        .status(202)
+                        .send({
+                            message: 'User y/o password incorrect'
                         })
-                    } else {
-                        return res
-                            .status(202)
-                            .send({
-                                message: 'User y/o password incorrect'
+                } else {
+                    bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
+    
+                        if (error) {
+                            return res
+                                .status(500)
+                                .send({
+                                    message: err.stack
+                                })
+                        }
+                        if (response == true) {
+                            return res.status(200).send({
+                                message: 'Login succesfully',
+                                token: jwt.createToken(data[0][0].idUsuario)
                             })
-
-                    }
-                })
+                        } else {
+                            return res
+                                .status(202)
+                                .send({
+                                    message: 'User y/o password incorrect'
+                                })
+    
+                        }
+                    })
+                }
             }
         })
     }
