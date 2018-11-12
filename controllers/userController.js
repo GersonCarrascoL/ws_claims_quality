@@ -30,7 +30,7 @@ class UserController {
                         message: 'User y/o password incorrect'
                     })
             } else {
-                if(data[0][0].es_eliminado == 1){
+                if(data[0][0].es_eliminado == "1"){
                     return res
                         .status(404)
                         .send({
