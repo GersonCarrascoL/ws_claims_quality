@@ -22,20 +22,21 @@ class UserController {
                         message: err.stack
                     })
             }
-            if(data[0][0].es_eliminado == 1){
+
+            if (data[0][0] == undefined) {
                 return res
-                    .status(404)
+                    .status(202)
                     .send({
-                        message: 'User delete'
+                        message: 'User y/o password incorrect'
                     })
-            }else{
-                if (data[0][0] == undefined) {
+            } else {
+                if(data[0][0].es_eliminado == 1){
                     return res
-                        .status(202)
+                        .status(404)
                         .send({
-                            message: 'User y/o password incorrect'
+                            message: 'User deleted'
                         })
-                } else {
+                }else{
                     bcrypt.compare(user.userPassword, data[0][0].password, function (error, response) {
     
                         if (error) {
