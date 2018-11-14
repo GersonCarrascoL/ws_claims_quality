@@ -6,7 +6,8 @@ const userModel = require('../models/userModel'),
     jwt = new jwtService(),
     bcrypt = require('bcryptjs'),
     SALTROUNDS = 10,
-    urlImageBase = 'http://localhost:5000/uploads/'
+    // urlImageBase = 'http://localhost:5000/uploads/'
+    urlImageBase = 'https://wsclaims.herokuapp.com//uploads/'
 
 class UserController {
     userLogin(req, res) {
