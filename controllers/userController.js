@@ -186,7 +186,7 @@ class UserController {
 
         bcrypt.genSalt(SALTROUNDS, (err,salt)=>{
             if (err) { return next(err); }
-
+            
             bcrypt.hash(claim.userPassword, salt, (err, hash) => {
                 claim.userPassword = hash
     
@@ -198,6 +198,7 @@ class UserController {
                         })
                 }
                 um.userClaim( claim , (err,data)=>{
+                    console.log(data[0][0]['response']);
                     if (err) {
                         return res
                             .status(500)

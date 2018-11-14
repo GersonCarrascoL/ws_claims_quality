@@ -31,9 +31,18 @@ class UserModel {
     }
 
     userClaim(claim,cb){
-        conn.query('CALL sp_app_postClaim(?,?,?,?,?)',[
-            claim.claimUserId,
-            claim.claimDate,
+        conn.query('CALL sp_app_postClaim(?,?,?,?,?,?,?,?,?,?,?,?,?)',[
+            claim.userName,
+            claim.userLastName,
+            claim.userEmail,
+            claim.userID,
+            claim.userPassword,
+            claim.userDNI,
+            claim.userGender,
+            claim.userDistrict,
+            claim.userOcupation,
+            claim.userScholarGrade,
+
             claim.claimMessage,
             claim.claimCellPhone,
             claim.claimUrlImage
