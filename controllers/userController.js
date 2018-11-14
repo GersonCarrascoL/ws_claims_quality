@@ -5,6 +5,7 @@ const userModel = require('../models/userModel'),
     um = new userModel(),
     jwt = new jwtService(),
     bcrypt = require('bcryptjs'),
+    SALTROUNDS = 10,
     urlImageBase = 'http://localhost:5000/uploads'
 
 class UserController {
@@ -87,47 +88,52 @@ class UserController {
             userOcupation: req.body.userOcupation,
             userScholarGrade: req.body.userScholarGrade
         }
+        
+        console.log(user);
+        bcrypt.genSalt(SALTROUNDS, (err,salt)=>{
+            if (err) { return next(err); }
 
-        bcrypt.hash(user.userPassword, 10, function (err, hash) {
-            user.userPassword = hash
-
-            if (err) {
-                return res
-                    .status(500)
-                    .send({
-                        message: err.stack
-                    })
-            }
-
-            um.userRegister(user, (error, data) => {
-                console.log(data[0][0]['response'])
-                if (error) {
+            bcrypt.hash(user.userPassword, salt, (err, hash) => {
+                user.userPassword = hash
+    
+                if (err) {
                     return res
                         .status(500)
                         .send({
-                            message: error.stack
+                            message: err.stack
                         })
-                } else {
-                    if (data[0][0]['response'] == 1) {
-                        return res
-                            .status(201)
-                            .send({
-                                message: 'User created'
-                            })
-                    } else if (data[0][0]['response'] == 0) {
-                        return res
-                            .status(400)
-                            .send({
-                                message: 'User created failed'
-                            })
-                    } else if(data[0][0]['response'] == -1){
-                        return res
-                            .status(202)
-                            .send({
-                                message: 'User already exist'
-                            })
-                    }
                 }
+    
+                um.userRegister(user, (error, data) => {
+                    console.log(data[0][0]['response'])
+                    if (error) {
+                        return res
+                            .status(500)
+                            .send({
+                                message: error.stack
+                            })
+                    } else {
+                        if (data[0][0]['response'] == -1) {
+                            return res
+                                .status(202)
+                                .send({
+                                    message: 'User already exist'
+                                })
+                        } else if (data[0][0]['response'] == 0) {
+                            return res
+                                .status(400)
+                                .send({
+                                    message: 'User created failed'
+                                })
+                        } else{
+                            return res
+                                .status(201)
+                                .send({
+                                    message: 'User created'
+                                })
+                        }
+                    }
+                })
             })
         })
 
