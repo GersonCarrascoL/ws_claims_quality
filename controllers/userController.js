@@ -6,7 +6,7 @@ const userModel = require('../models/userModel'),
     jwt = new jwtService(),
     bcrypt = require('bcryptjs'),
     SALTROUNDS = 10,
-    urlImageBase = 'http://localhost:5000/uploads'
+    urlImageBase = 'http://localhost:5000/uploads/'
 
 class UserController {
     userLogin(req, res) {
@@ -167,14 +167,59 @@ class UserController {
 
     userClaim(req,res){
         let claim = {
-            claimUserId: req,body,claimUserId,
-            claimDate : req.body.claimDate,
+            userName: req.body.userName,
+            userLastName: req.body.userLastName,
+            userEmail: req.body.userEmail,
+            userID: req.body.userID,
+            userPassword: req.body.userPassword,
+            userDNI: req.body.userDNI,
+            userGender: req.body.userGender,
+            userDistrict: req.body.userDistrict,
+            userOcupation: req.body.userOcupation,
+            userScholarGrade: req.body.userScholarGrade,
+
             claimMessage: req.body.claimMessage,
-            claimCellPhone: req.body.claimCellPhone
+            claimCellPhone: req.body.claimCellPhone,
+            claimPhoto : urlImageBase+req.file.originalname
         }
 
-        um.userClaim( claim , (err,response)=>{
-            
+        bcrypt.genSalt(SALTROUNDS, (err,salt)=>{
+            if (err) { return next(err); }
+
+            bcrypt.hash(claim.userPassword, salt, (err, hash) => {
+                claim.userPassword = hash
+    
+                if (err) {
+                    return res
+                        .status(500)
+                        .send({
+                            message: err.stack
+                        })
+                }
+                um.userClaim( claim , (err,data)=>{
+                    if (err) {
+                        return res
+                            .status(500)
+                            .send({
+                                message: err.stack
+                            })
+                    }
+
+                    if (data[0][0]['response'] == 1) {
+                        return res
+                            .status(201)
+                            .send({
+                                message: 'Claim send successfully'
+                            })
+                    } else if (data[0][0]['response'] == 0) {
+                        return res
+                            .status(202)
+                            .send({
+                                message: 'Error send claim'
+                            })
+                    }
+                })
+            })
         })
     }
 }
