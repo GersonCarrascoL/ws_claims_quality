@@ -16,7 +16,8 @@ app
     .set('port', port)
 
     // .use('/uploads',express.static('uploads'))
-    .use(bodyParser.json({limit: '20mb'}))
+    .use(bodyParser({limit: '5mb'})
+    .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: false }))
     .use(morgan('dev'))
     .use(restFul)
