@@ -15,7 +15,7 @@ const express = require('express'),
 app
     .set('port', port)
 
-    .use('/uploads',express.static('uploads'))
+    // .use('/uploads',express.static('uploads'))
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: false }))
     .use(morgan('dev'))

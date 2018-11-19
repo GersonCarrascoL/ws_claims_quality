@@ -7,7 +7,7 @@ const userModel = require('../models/userModel'),
     bcrypt = require('bcryptjs'),
     SALTROUNDS = 10,
     // urlImageBase = 'http://localhost:5000/uploads/'
-    urlImageBase = 'https://wsclaims.herokuapp.com//uploads/'
+    urlImageBase = 'https://wsclaims.herokuapp.com/uploads/'
 
 class UserController {
     userLogin(req, res) {
@@ -53,6 +53,7 @@ class UserController {
                             if (response == true) {
                                 return res.status(200).send({
                                     message: 'Login succesfully',
+                                    idUsuario : data[0][0].idUsuario,
                                     token: jwt.createToken(data[0][0].idUsuario)
                                 })
                             } else {
@@ -175,15 +176,16 @@ class UserController {
             userPassword: req.body.userPassword,
             userDNI: req.body.userDNI,
             userGender: req.body.userGender,
-            userDistrict: req.body.userDistrict,
+            userDistrict: parseInt(req.body.userDistrict),
             userOcupation: req.body.userOcupation,
             userScholarGrade: req.body.userScholarGrade,
 
             claimMessage: req.body.claimMessage,
             claimCellPhone: req.body.claimCellPhone,
-            claimPhoto : urlImageBase+req.file.originalname
+            claimPhoto: req.body.claimPhoto
         }
 
+        console.log(claim)
         bcrypt.genSalt(SALTROUNDS, (err,salt)=>{
             if (err) { return next(err); }
             
@@ -198,7 +200,6 @@ class UserController {
                         })
                 }
                 um.userClaim( claim , (err,data)=>{
-                    console.log(data[0][0]['response']);
                     if (err) {
                         return res
                             .status(500)
@@ -206,7 +207,7 @@ class UserController {
                                 message: err.stack
                             })
                     }
-
+                    console.log(data)
                     if (data[0][0]['response'] == 1) {
                         return res
                             .status(201)
