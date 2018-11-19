@@ -185,7 +185,6 @@ class UserController {
             claimPhoto: req.body.claimPhoto
         }
 
-        console.log(claim)
         bcrypt.genSalt(SALTROUNDS, (err,salt)=>{
             if (err) { return next(err); }
             
@@ -201,13 +200,13 @@ class UserController {
                 }
                 um.userClaim( claim , (err,data)=>{
                     if (err) {
+                        console.log(err.stack)
                         return res
                             .status(500)
                             .send({
                                 message: err.stack
                             })
                     }
-                    console.log(data)
                     if (data[0][0]['response'] == 1) {
                         return res
                             .status(201)
