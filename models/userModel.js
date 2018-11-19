@@ -45,7 +45,7 @@ class UserModel {
 
             claim.claimMessage,
             claim.claimCellPhone,
-            claim.claimUrlImage
+            claim.claimPhoto
         ],cb)
     }
 }
