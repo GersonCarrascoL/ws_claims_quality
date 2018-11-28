@@ -54,6 +54,8 @@ class UserController {
                                 return res.status(200).send({
                                     message: 'Login succesfully',
                                     idUsuario : data[0][0].idUsuario,
+                                    userName : data[0][0].userName,
+                                    userEmail : data[0][0].correo,
                                     token: jwt.createToken(data[0][0].idUsuario)
                                 })
                             } else {
