@@ -15,7 +15,6 @@ const express = require('express'),
 app
     .set('port', port)
 
-    // .use('/uploads',express.static('uploads'))
     .use(bodyParser.json({limit: 1024 * 1024 * 2000}))
     .use(bodyParser.urlencoded({ extended: false,limit: 1024 * 1024 * 2000 }))
     .use(morgan('dev'))
